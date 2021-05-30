@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ping-Pong</title>
+    <style>
+        body {
+            background-color: black;
+            overflow: hidden;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            pointer-events: none;
+        }
+        .player, #ball, #fail {
+            position: absolute;
+            transform: translate(-50%, -50%);
+        }
+        .player {
+            width: 10px; height: 100px;
+            left: 50px;
+            background-color: #efefef;
+            border-radius: 5px;
+        }
+        #ball {
+            width: 20px; height: 20px;
+            top: 50%; left: 50%;
+            background-color: #efefef;
+            border-radius: 10px;
+        }
+        #fail {
+            font-size: 144px;
+            top: 50%;
+            left: 50%;
+            color: #efefef;
+        }
+        #footer {
+            position: absolute;
+            width: 100vw;
+            height: 50px;
+            bottom: 0px;
+            text-align: center;
+            color: #efefef;
+            border-top: #efefef solid 1px;
+            background: linear-gradient(45deg, rgba(0,0,0,0), rgba(64, 64, 64, .3));
+            padding: 5px;
+            font-size: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="player"></div>
+    <div id="ball"></div>
+    <div id="fail" style="display: none;">PRZEGRAŁEŚ!</div>
+    <div id="footer">Punkty: 0</div>
+</body>
+<script>
+    const player = document.querySelector(".player");
+    const ball = document.querySelector("#ball");
+    const footer = document.querySelector("#footer");
+    let ballX = window.innerWidth/2, ballY = (window.innerHeight-50)/2;
+    let acX = Math.random()%10-5, acY = Math.random()%10-5;
+    let playerY, ballMove, points=0;
+    const playerMove = (mouse) => {
+        playerY = mouse.pageY;
+        player.style.top = mouse.pageY+'px';
+    }
+    document.addEventListener("mousemove", playerMove);
+    ballMove = setInterval(function() {
+        ballX += acX; ballY += acY;
+        ball.style.top = ballY+'px';
+        ball.style.left = ballX+'px';
+        if((ballX <= 55) && (ballY > playerY-50) && (ballY < playerY+50)) {
+            acX *= -1;
+            acY *= -1;
+            acX++;
+            points++;
+            footer.innerHTML = "Punkty: "+points;
+        } else {
+            if((ballY <= 10) || (ballY >= window.innerHeight-60))
+                acY *= -1;
+            if(ballX >= window.innerWidth-10)
+                acX *= -1;
+            else if(ballX<=45) {
+                document.querySelector('#fail').style.display = 'block';
+                clearInterval(ballMove);
+                document.removeEventListener("mousemove", playerMove);
+            }
+        }
+    }, 10);
+</script>
+</html>
