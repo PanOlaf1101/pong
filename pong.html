@@ -59,8 +59,8 @@
     const ball = document.querySelector("#ball");
     const footer = document.querySelector("#footer");
     let ballX = window.innerWidth/2, ballY = (window.innerHeight-50)/2;
-    let acX = Math.ceil(Math.random())%10-5;
-    let acY = Math.ceil(Math.random())%10-5;
+    let acX = Math.floor(Math.random()*10)-5;
+    let acY = Math.floor(Math.random()*10)-5;
     let playerY, ballMove, points=0;
     const playerMove = (mouse) => {
         playerY = mouse.pageY;
